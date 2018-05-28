@@ -30,6 +30,7 @@ public class UserLoginFilter implements Filter {
         // иначе идем на страницу логина
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
+        authBean.setRequestedPage(request.getRequestURI()); // сохраняем URL который запрашивали
         response.sendRedirect(request.getContextPath()+"/login.xhtml");
     }
 

@@ -5,7 +5,9 @@ import webbey.auth.ejb.AuthentificationManager;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 
 @Named
@@ -14,6 +16,16 @@ public class AuthBean implements Serializable{
     private boolean loggetIn;
     private String login;
     private String password;
+
+    private String requestedPage;
+
+    public String getRequestedPage() {
+        return requestedPage;
+    }
+
+    public void setRequestedPage(String requestedPage) {
+        this.requestedPage = requestedPage;
+    }
 
     @EJB
     private AuthentificationManager authentificationManager;
@@ -25,6 +37,16 @@ public class AuthBean implements Serializable{
         }
 
         loggetIn = authentificationManager.loginAsUser(login,password);
+
+        if (loggetIn){
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(requestedPage);
+                // redirect направляю на запрошеную старницу.
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public boolean isLoggetIn() {
