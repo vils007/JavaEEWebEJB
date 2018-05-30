@@ -1,12 +1,14 @@
 package webbey.auth.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
 public class ShopUser {
     @Id
+    @GeneratedValue
     private long id;
     private String name;
 

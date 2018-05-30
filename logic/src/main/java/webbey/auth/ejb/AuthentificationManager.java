@@ -44,14 +44,19 @@ public class AuthentificationManager {
         return true;
     }
 
-    public boolean addUser(String email, String password){
-        return addUser(email,password,"test");
+    public boolean addUser(String email, String password) {
+        return addUser(email, password, "test");
     }
 
 
     public boolean addUser(String email, String password, String name) { // стоит в отдельный класс перенести
+        if (StringUtils.isEmpty(email) || StringUtils.isEmpty(password)) return false;
+        Credentials cred = entityManager.find(Credentials.class, email);
+        if (cred != null) return false;
+
         try {
-           // entityManager.getTransaction().begin();
+
+            // entityManager.getTransaction().begin();
             Credentials credentials = new Credentials();
             credentials.setEmail(email);
             credentials.setPassword(password);
@@ -63,7 +68,7 @@ public class AuthentificationManager {
 
             entityManager.persist(credentials);
             entityManager.persist(shopUser);
-        //    entityManager.getTransaction().commit();
+            //    entityManager.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("addUser do ot worked");
             return false;
